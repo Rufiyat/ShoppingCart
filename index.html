@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <!-- first item in cart -->
+                           <!-- minus btn -->
+                           <button class="btn btn-default"><i id="minus-btn1" class="fas fa-minus"></i></button>
+                           <input type="text" id="current-num1" class="form-control text-center" value="1">
+                           <button id="plus-btn1" class="btn btn-default"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$<span id="Total1">1219</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <!-- second item in cart -->
+                           <button class="btn btn-default"><i id="minus-btn2" class="fas fa-minus"></i></button>
+                           <input type="text" id="current-num2" class="form-control text-center" value="1">
+                           <button class="btn btn-default"><i id="plus-btn2" class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$<span id="Total2">59</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$<span id="sub-total">1278</span></h5>
+                        <h5>$<span id="tax">191.7</span></h5>
+                        <h5>$<span id="total">1469</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out">Check Out</button>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+
+   <script>
+      const pricePhone = 1219;
+      const priceCase = 59;
+      const taxRate = 0.15; 
+      // minus btn event handler for item 1
+      const minusBtn1 = document.getElementById("minus-btn1");
+      minusBtn1.addEventListener("click", function(){
+         const cartAfterMinus1 = minusBtn("current-num1");
+         updateSubtotal();
+         updateTax();
+         updateTotal();
+         updateItemTotal("Total1", "Total2");
+      })
+
+      // plus btn event handler for item 1
+      const plusBtn1 = document.getElementById("plus-btn1")
+      plusBtn1.addEventListener("click", function(){
+         const cartAfterPlus1 = plusBtn("current-num1");
+         updateSubtotal();
+         updateTax();
+         updateTotal();
+         updateItemTotal("Total1", "Total2");
+      })
+
+      // minus btn event handler  for item 2
+      const minusBtn2 = document.getElementById("minus-btn2");
+      minusBtn2.addEventListener("click", function(){
+         const cartAfterMinus2 = minusBtn("current-num2");
+         updateSubtotal();
+         updateTax();
+         updateTotal();
+         updateItemTotal("Total1", "Total2");
+      })
+
+      // plus btn event handler for item 2
+      const plusBtn2 = document.getElementById("plus-btn2")
+      plusBtn2.addEventListener("click", function(){
+         const cartAfterPlus2 = plusBtn("current-num2");
+         updateSubtotal();
+         updateTax();
+         updateTotal();
+         updateItemTotal("Total1", "Total2");
+      })
+
+      // function for minus and plus button 
+      function minusBtn(id){
+         const currentCart = document.getElementById(id).value;
+         const updatedCart = parseFloat(currentCart) - 1;
+         document.getElementById(id).value = updatedCart;
+         return updatedCart;
+      }
+      function plusBtn(id) {
+         const numCart = document.getElementById(id).value;
+         const updatedCartNum = parseFloat(numCart) + 1;
+         document.getElementById(id).value = updatedCartNum;
+         return updatedCartNum;
+      }
+
+      // functions for calculating and updating subtotal
+      function subtotal(cartNum1, cartNum2){
+         const subTotal = cartNum1*pricePhone + cartNum2*priceCase;
+         return  subTotal; 
+      }
+      function updateSubtotal() {
+         const finalCart1 = document.getElementById("current-num1").value;
+         const finalCart2 = document.getElementById("current-num2").value;
+         const finalSub = subtotal(finalCart1, finalCart2);
+         document.getElementById("sub-total").innerText = finalSub;
+      }
+      
+      // functions for calculating and updating tax 
+      function taxAmount(cartNum1, cartNum2) {
+         const taxTotal = (cartNum1*pricePhone+cartNum2*priceCase)*taxRate;
+         return taxTotal;
+      }
+      function updateTax() {
+         const finalCart1 = document.getElementById("current-num1").value;
+         const finalCart2 = document.getElementById("current-num2").value;
+         const totalTax = taxAmount(finalCart1, finalCart2);
+         document.getElementById("tax").innerText = totalTax;
+      }
+
+      // functions for calculating and updating total
+      function total(cartNum1, cartNum2) {
+         const totalAmount  = taxAmount(cartNum1,  cartNum2) + subtotal(cartNum1, cartNum2);
+         return totalAmount;
+      }
+      function updateTotal() {
+         const finalCart1 = document.getElementById("current-num1").value;
+         const finalCart2 = document.getElementById("current-num2").value;
+         const totalValue = total(finalCart1, finalCart2);
+         document.getElementById("total").innerText = totalValue;
+      }
+
+      function  updateItemTotal(id1, id2) {
+         const finalCart1 = document.getElementById("current-num1").value;
+         const finalCart2 = document.getElementById("current-num2").value;
+         const itemTotal1 = finalCart1 * pricePhone;
+         const itemTotal2 = finalCart2 * priceCase;
+         document.getElementById(id1).innerText = itemTotal1;
+         document.getElementById(id2).innerText = itemTotal2;
+      }
+      
+   </script>
+</body>
+
+</html>
